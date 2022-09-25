@@ -3,14 +3,14 @@ package test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.AirplaneSeater2;
+import main.AirplaneSeater;
 
 class AirlineTest {
-	private AirplaneSeater2 as;
+	private AirplaneSeater as;
 
 	@BeforeEach
 	void init() {
-		as = new AirplaneSeater2();
+		as = new AirplaneSeater();
 	}
 
 	@Test

@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
-public class AirplaneSeater2 {
+public class AirplaneSeater {
 	private static final String FILLED_SLOT_POSTFIX = "|";
 	private int numWindowSeats = 0;
 	private int numAisleSeats = 0;
