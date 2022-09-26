@@ -176,7 +176,7 @@ public class AirplaneSeater {
 	}
 
 	private String getNoSeatsSlot() {
-		return "-".repeat(numDigits) + FILLED_SLOT_POSTFIX;
+		return " ".repeat(numDigits) + " ";
 	}
 
 	private String getFormattedNumber(int idx) {
