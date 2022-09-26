@@ -1,5 +1,6 @@
 package test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,81 +8,111 @@ import main.AirplaneSeater;
 
 class AirlineTest {
 	private AirplaneSeater as;
+	private int[][] seating;
+	private int numPassengers;
 
 	@BeforeEach
 	void init() {
 		as = new AirplaneSeater();
 	}
 
+	private void seatAndTest() {
+		as.seatAirplane(seating, numPassengers);
+		int totalSeats = 0;
+		for (var x : seating) {
+			totalSeats += x[0] * x[1];
+		}
+
+		int numPassengersSeated = numPassengers <= totalSeats ? numPassengers : totalSeats;
+		int numPassengersUnseated = numPassengers - numPassengersSeated;
+		int numSeatsLeft = totalSeats - numPassengersSeated;
+
+		Assertions.assertEquals(numPassengersSeated, as.getNumPassengersSeated());
+		Assertions.assertEquals(numPassengersUnseated, as.getNumPassengersUnseated());
+		Assertions.assertEquals(numSeatsLeft, as.getNumSeatsLeft());
+	}
+
 	@Test
 	void testReadingInputs() {
-		int[][] seating = { { 2, 3 }, { 3, 3 }, { 2, 3 } };
-		as.seatAirplane(seating, 10);
+		seating = new int[][] { { 2, 3 }, { 3, 3 }, { 2, 3 } };
+		numPassengers = 10;
+		seatAndTest();
 	}
 
 	@Test
 	void testTwo() {
-		int[][] seating = { { 3, 2 }, { 4, 3 }, { 2, 3 }, { 3, 4 } };
-		as.seatAirplane(seating, 30);
+		seating = new int[][] { { 3, 2 }, { 4, 3 }, { 2, 3 }, { 3, 4 } };
+		numPassengers = 30;
+		seatAndTest();
 	}
 
 	@Test
 	void testEmptyPlane() {
-		int[][] seating = {};
-		as.seatAirplane(seating, 10);
+		seating = new int[][] {};
+		numPassengers = 10;
+		seatAndTest();
 	}
 
 	@Test
 	void testNoPassengers() {
-		int[][] seating = { { 1, 2 }, { 2, 3 } };
-		as.seatAirplane(seating, 0);
+		seating = new int[][] { { 1, 2 }, { 2, 3 } };
+		numPassengers = 0;
+		seatAndTest();
 	}
 
 	@Test
 	void testOnlySingleRows() {
-		int[][] seating = { { 1, 3 }, { 1, 5 }, { 1, 3 } };
-		as.seatAirplane(seating, 8);
+		seating = new int[][] { { 1, 3 }, { 1, 5 }, { 1, 3 } };
+		numPassengers = 8;
+		seatAndTest();
 	}
 
 	@Test
 	void testOnlySingleCols() {
-		int[][] seating = { { 3, 1 }, { 5, 1 }, { 3, 1 } };
-		as.seatAirplane(seating, 8);
+		seating = new int[][] { { 3, 1 }, { 5, 1 }, { 3, 1 } };
+		numPassengers = 8;
+		seatAndTest();
 	}
 
 	@Test
 	void testOnlySingleSeats() {
-		int[][] seating = { { 1, 1 } };
-		as.seatAirplane(seating, 3);
+		seating = new int[][] { { 1, 1 } };
+		numPassengers = 3;
+		seatAndTest();
 	}
 
 	@Test
 	void testOnlyRowsSingleSeat() {
-		int[][] seating = { { 1, 1 }, { 1, 1 }, { 1, 1 } };
-		as.seatAirplane(seating, 3);
+		seating = new int[][] { { 1, 1 }, { 1, 1 }, { 1, 1 } };
+		numPassengers = 3;
+		seatAndTest();
 	}
 
 	@Test
 	void testOnlyRowsSingleSeatWithExtraPassengers() {
-		int[][] seating = { { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 } };
-		as.seatAirplane(seating, 8);
+		seating = new int[][] { { 1, 1 }, { 1, 1 }, { 1, 1 }, { 1, 1 } };
+		numPassengers = 8;
+		seatAndTest();
 	}
 
 	@Test
 	void testWith5Aisles() {
-		int[][] seating = { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
-		as.seatAirplane(seating, 11);
+		seating = new int[][] { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
+		numPassengers = 11;
+		seatAndTest();
 	}
 
 	@Test
 	void testWith5AislesWithLesserPassengers() {
-		int[][] seating = { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
-		as.seatAirplane(seating, 9);
+		seating = new int[][] { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
+		numPassengers = 9;
+		seatAndTest();
 	}
 
 	@Test
 	void testWith5AislesWithExtraPassengers() {
-		int[][] seating = { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
-		as.seatAirplane(seating, 16);
+		seating = new int[][] { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 1, 3 }, { 3, 1 } };
+		numPassengers = 16;
+		seatAndTest();
 	}
 }

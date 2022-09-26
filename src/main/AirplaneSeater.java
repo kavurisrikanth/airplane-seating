@@ -88,7 +88,6 @@ public class AirplaneSeater {
 					}
 
 					for (int x = 0; !seatingDone && x < windowLeft; x++) {
-						// TODO: Unnecessary loop
 						writeWindowSeatAssignment(sb);
 					}
 
@@ -105,7 +104,6 @@ public class AirplaneSeater {
 					}
 
 					for (int x = 0; !seatingDone && x < windowRight; x++) {
-//            TODO: Unnecessary loop
 						writeWindowSeatAssignment(sb);
 					}
 				} else {
@@ -130,6 +128,18 @@ public class AirplaneSeater {
 			System.out.println("*** All seats allocated. " + passengersLeft + " passengers unseated.");
 		}
 		System.out.println("***********************************************************");
+	}
+	
+	public int getNumPassengersSeated() {
+		return passengersSeated;
+	}
+	
+	public int getNumPassengersUnseated() {
+		return numPassengers - passengersSeated;
+	}
+	
+	public int getNumSeatsLeft() {
+		return seatsLeft;
 	}
 
 	private void writeWindowSeatAssignment(StringBuilder sb) {
