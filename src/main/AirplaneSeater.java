@@ -31,6 +31,7 @@ public class AirplaneSeater {
 		return this;
 	}
 
+	/* Seats an airplane and prints the final seating to console */
 	public void seatAirplane(int[][] seating, int numPassengers) {
 		System.out.println("***********************************************************");
 		if (seating == null) {
@@ -41,11 +42,13 @@ public class AirplaneSeater {
 		System.out.println("*** Seating: " + Arrays.deepToString(seating) + ", Passengers: " + numPassengers + " ***");
 		this.numPassengers = numPassengers;
 
+		// Calculating the number of digits. Makes it easier when printing the result.
 		int numP = numPassengers < 0 ? numPassengers * -1 : numPassengers;
 		numDigits = String.valueOf(numP).length();
 
+		// Calculating the number of seats
+		// Also gives the index at which a particular seat starts
 		// Window seats
-		// Potential change
 		if (seating.length != 0) {
 			numWindowSeats += seating[0][rowIdx];
 			if (seating.length != 1) {
@@ -59,32 +62,34 @@ public class AirplaneSeater {
 			numCenterSeats += getNumCenterSeats(seating, i, true);
 		}
 
+		// Now we have the indices
 		aisleIdx = 1;
 		windowIdx = numAisleSeats + 1;
 		centerIdx = numAisleSeats + numWindowSeats + 1;
 
-		int maxRows = Arrays.stream(seating).map(x -> x[rowIdx]).max(Integer::compare).orElse(0);
-		StringBuilder sb = new StringBuilder();
-
+		// Will be exposed via methods
 		seatsLeft = numWindowSeats + numAisleSeats + numCenterSeats;
 		passengersSeated = 0;
 		seatingDone = false;
 
+		// Iterating over all rows and printing the passenger numbers in each seat
+		int maxRows = Arrays.stream(seating).map(x -> x[rowIdx]).max(Integer::compare).orElse(0);
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < maxRows; i++) {
 			for (int j = 0; j < seating.length; j++) {
 				int[] row = seating[j];
-				// Potential change
 				int numSeats = row[colIdx];
-				// Potential change
 				if (i < row[rowIdx]) {
 					// Valid row
 					int windowLeft = 0, aisleLeft = 0, center = 0, aisleRight = 0, windowRight = 0;
 
 					if (j == 0) {
+						// Window seat on the left
 						windowLeft = 1;
 						center = getNumCenterSeats(seating, j, false);
 						aisleRight = getNumAisleSeats(seating, j, false);
 					} else if (j == seating.length - 1) {
+						// Window seat on the right
 						windowRight = 1;
 						aisleLeft = getNumAisleSeats(seating, j, false);
 						center = getNumCenterSeats(seating, j, false);
@@ -97,6 +102,7 @@ public class AirplaneSeater {
 						}
 					}
 
+					// Writing the seats for each aisle in the current row
 					for (int x = 0; !seatingDone && x < windowLeft; x++) {
 						writeWindowSeatAssignment(sb);
 					}
@@ -128,6 +134,7 @@ public class AirplaneSeater {
 					sb.append(" || ");
 				}
 			}
+			// End of row
 			sb.append("\n");
 		}
 
@@ -152,6 +159,7 @@ public class AirplaneSeater {
 		return seatsLeft;
 	}
 
+	/* Helper methods */
 	private void writeWindowSeatAssignment(StringBuilder sb) {
 		if (windowIdx > numPassengers) {
 			sb.append(getEmptySlot());
