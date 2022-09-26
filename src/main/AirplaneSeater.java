@@ -20,6 +20,16 @@ public class AirplaneSeater {
 	private int passengersSeated;
 
 	private int numDigits;
+	
+	private int rowIdx = 0;
+	private int colIdx = 1;
+	
+	public AirplaneSeater invert() {
+		// Adds the assumption that the input array will be inverted
+		this.rowIdx = 1;
+		this.colIdx = 0;
+		return this;
+	}
 
 	public void seatAirplane(int[][] seating, int numPassengers) {
 		System.out.println("***********************************************************");
@@ -37,9 +47,9 @@ public class AirplaneSeater {
 		// Window seats
 		// Potential change
 		if (seating.length != 0) {
-			numWindowSeats += seating[0][0];
+			numWindowSeats += seating[0][rowIdx];
 			if (seating.length != 1) {
-				numWindowSeats += seating[seating.length - 1][0];
+				numWindowSeats += seating[seating.length - 1][rowIdx];
 			}
 		}
 
@@ -53,7 +63,7 @@ public class AirplaneSeater {
 		windowIdx = numAisleSeats + 1;
 		centerIdx = numAisleSeats + numWindowSeats + 1;
 
-		int maxRows = Arrays.stream(seating).map(x -> x[0]).max(Integer::compare).orElse(0);
+		int maxRows = Arrays.stream(seating).map(x -> x[rowIdx]).max(Integer::compare).orElse(0);
 		StringBuilder sb = new StringBuilder();
 
 		seatsLeft = numWindowSeats + numAisleSeats + numCenterSeats;
@@ -64,9 +74,9 @@ public class AirplaneSeater {
 			for (int j = 0; j < seating.length; j++) {
 				int[] row = seating[j];
 				// Potential change
-				int numSeats = row[1];
+				int numSeats = row[colIdx];
 				// Potential change
-				if (i < row[0]) {
+				if (i < row[rowIdx]) {
 					// Valid row
 					int windowLeft = 0, aisleLeft = 0, center = 0, aisleRight = 0, windowRight = 0;
 
@@ -195,10 +205,10 @@ public class AirplaneSeater {
 		return s;
 	}
 
-	private static int getNumAisleSeats(int[][] seating, int i, boolean entireAisle) {
+	private int getNumAisleSeats(int[][] seating, int i, boolean entireAisle) {
 		// Potential change
-		int numRows = seating[i][0];
-		int numSeats = seating[i][1];
+		int numRows = seating[i][rowIdx];
+		int numSeats = seating[i][colIdx];
 		int aisleSeats = 0;
 
 		if (i == 0 || i == seating.length - 1) {
@@ -217,10 +227,10 @@ public class AirplaneSeater {
 		return aisleSeats * (entireAisle ? numRows : 1);
 	}
 
-	private static int getNumCenterSeats(int[][] seating, int i, boolean entireAisle) {
+	private int getNumCenterSeats(int[][] seating, int i, boolean entireAisle) {
 		// Potential change
-		int numRows = seating[i][0];
-		int numSeats = seating[i][1];
+		int numRows = seating[i][rowIdx];
+		int numSeats = seating[i][colIdx];
 		int centerSeats = 0;
 
 		if (i == 0 || i == seating.length - 1) {

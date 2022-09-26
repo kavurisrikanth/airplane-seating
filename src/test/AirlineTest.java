@@ -8,16 +8,17 @@ import main.AirplaneSeater;
 
 class AirlineTest {
 	private AirplaneSeater as;
+	private AirplaneSeater asInv;
 	private int[][] seating;
 	private int numPassengers;
 
 	@BeforeEach
 	void init() {
 		as = new AirplaneSeater();
+		asInv = new AirplaneSeater().invert();
 	}
 
 	private void seatAndTest() {
-		as.seatAirplane(seating, numPassengers);
 		int totalSeats = 0;
 		for (var x : seating) {
 			totalSeats += x[0] * x[1];
@@ -27,9 +28,15 @@ class AirlineTest {
 		int numPassengersUnseated = numPassengers - numPassengersSeated;
 		int numSeatsLeft = totalSeats - numPassengersSeated;
 
+		as.seatAirplane(seating, numPassengers);
 		Assertions.assertEquals(numPassengersSeated, as.getNumPassengersSeated());
 		Assertions.assertEquals(numPassengersUnseated, as.getNumPassengersUnseated());
 		Assertions.assertEquals(numSeatsLeft, as.getNumSeatsLeft());
+		
+		asInv.seatAirplane(seating, numPassengers);
+		Assertions.assertEquals(numPassengersSeated, asInv.getNumPassengersSeated());
+		Assertions.assertEquals(numPassengersUnseated, asInv.getNumPassengersUnseated());
+		Assertions.assertEquals(numSeatsLeft, asInv.getNumSeatsLeft());
 	}
 
 	@Test
